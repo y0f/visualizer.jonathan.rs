@@ -1,0 +1,374 @@
+@charset "UTF-8";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+div,
+span,
+h1,
+p,
+nav,
+ul,
+li,
+a,
+i,
+canvas {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+ul {
+  list-style: none;
+}
+
+:focus {
+  outline: 0;
+}
+
+html {
+  font-size: 62.5%;
+  overflow: hidden;
+}
+
+body {
+  display: block;
+  background-color: #000;
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 100;
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.3s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+a:hover {
+  opacity: 0.8;
+}
+
+main #canvasContainer {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+main #canvasContainer #canvas,
+main #canvasContainer #canvas2,
+main #canvasContainer #canvas3 {
+  position: fixed;
+  display: block;
+}
+main #canvasContainer #canvas.hide,
+main #canvasContainer #canvas2.hide,
+main #canvasContainer #canvas3.hide {
+  display: none;
+}
+
+main #audio_ui {
+  position: fixed;
+  z-index: 1000;
+  bottom: 40px;
+  right: 50px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.6s;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+main #audio_ui.visible {
+  visibility: visible;
+}
+main #audio_ui.show {
+  opacity: 1;
+}
+main #audio_ui .track_tit {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-align: right;
+}
+main #audio_ui .ui_child {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+main #audio_ui .ui_child .bgm_setting,
+main #audio_ui .ui_child .backward,
+main #audio_ui .ui_child .play,
+main #audio_ui .ui_child .forward,
+main #audio_ui .ui_child .vol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  cursor: pointer;
+  transition: opacity 0.3s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+main #audio_ui .ui_child .backward:hover,
+main #audio_ui .ui_child .play:hover,
+main #audio_ui .ui_child .forward:hover,
+main #audio_ui .ui_child .vol:hover {
+  opacity: 0.8;
+}
+
+/* The toggle glyph is a short, wide pill, so it needs a larger font-size than the
+   transport glyphs to read at the same optical weight in the row. */
+main #audio_ui .ui_child .bgm_setting {
+  position: relative;
+  font-size: 1.6rem;
+  width: 19px;
+  margin-right: 4px;
+}
+main #audio_ui .ui_child .bgm_setting span {
+  transform: rotate(180deg);
+  opacity: 0.5;
+  display: block;
+  line-height: 1;
+}
+main #audio_ui .ui_child .bgm_setting.on span {
+  opacity: 1;
+  transform: rotate(0);
+}
+main #audio_ui .ui_child .bgm_setting:hover span {
+  opacity: 0.8;
+}
+main #audio_ui .ui_child .bgm_setting:hover:after {
+  opacity: 1;
+}
+main #audio_ui .ui_child .bgm_setting:after {
+  pointer-events: none;
+  opacity: 0;
+  content: "Background play mode\AYou can play in the background";
+  white-space: pre;
+  background-color: #fff;
+  padding: 10px;
+  font-size: 1rem;
+  color: #000;
+  display: block;
+  position: absolute;
+  text-align: center;
+  bottom: 100%;
+  margin-bottom: 14px;
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  transition: opacity 0.3s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+  line-height: 1.5;
+}
+
+/* Fixed widths keep the row from shifting when a glyph swaps (play/pause, volume/mute). */
+main #audio_ui .ui_child .backward,
+main #audio_ui .ui_child .forward {
+  font-size: 1.8rem;
+  width: 20px;
+}
+main #audio_ui .ui_child .play {
+  font-size: 1.8rem;
+  width: 18px;
+}
+main #audio_ui .ui_child .play .fa-pause {
+  display: none;
+}
+main #audio_ui .ui_child .play.playing .fa-play {
+  display: none;
+}
+main #audio_ui .ui_child .play.playing .fa-pause {
+  display: block;
+}
+
+main #audio_ui .ui_child .vol_wrap {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+main #audio_ui .ui_child .vol_slider {
+  position: relative;
+  display: block;
+  height: 20px;
+  width: 0;
+  margin-right: 0;
+  opacity: 0;
+  overflow: hidden;
+  cursor: pointer;
+  pointer-events: none;
+  touch-action: none;
+  transition: width 0.5s, margin-right 0.5s, opacity 0.3s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+main #audio_ui .ui_child .vol_wrap.open .vol_slider {
+  width: 84px;
+  margin-right: 12px;
+  opacity: 1;
+  pointer-events: auto;
+}
+main #audio_ui .ui_child .v_bar,
+main #audio_ui .ui_child .v_fill {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 84px;
+  height: 2px;
+  margin-top: -1px;
+  display: block;
+}
+main #audio_ui .ui_child .v_bar {
+  background-color: #666;
+}
+main #audio_ui .ui_child .v_fill {
+  background-color: #fff;
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+main #audio_ui .ui_child .vol {
+  font-size: 1.7rem;
+  width: 22px;
+}
+main #audio_ui .ui_child .vol .fa-volume-mute {
+  display: none;
+}
+main #audio_ui .ui_child .vol.mute .fa-volume-up {
+  display: none;
+}
+main #audio_ui .ui_child .vol.mute .fa-volume-mute {
+  display: block;
+}
+
+main #progress_bar {
+  position: fixed;
+  bottom: 0;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s;
+  transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+main #progress_bar.visible {
+  visibility: visible;
+}
+main #progress_bar.show {
+  opacity: 1;
+}
+main #progress_bar .b_bar,
+main #progress_bar .p_bar {
+  top: 17px;
+  width: 100vw;
+  height: 3px;
+}
+main #progress_bar .b_bar {
+  position: relative;
+  background-color: #666;
+}
+main #progress_bar .p_bar {
+  position: absolute;
+  transform-origin: left top;
+  transform: scaleX(0);
+  background-color: #fff;
+}
+
+main #sound_message {
+  position: fixed;
+  pointer-events: none;
+  font-size: 1.8rem;
+  white-space: nowrap;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -70px, 0);
+  opacity: 0;
+  transition: opacity 0.6s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+main #sound_message.hide {
+  display: none;
+}
+main #sound_message.show {
+  opacity: 1;
+}
+
+main #start_play_btn {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.6s;
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+main #start_play_btn.show {
+  opacity: 1;
+  visibility: visible;
+}
+main #start_play_btn:hover {
+  opacity: 0.8;
+}
+main #start_play_btn.hide {
+  display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+  body {
+    height: -webkit-fill-available;
+  }
+}
+
+@media (max-width: 1023px) {
+  main #audio_ui {
+    right: 20px;
+    top: 24px;
+    bottom: auto;
+  }
+  main #audio_ui .track_tit {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  main #audio_ui .ui_child .bgm_setting {
+    display: none;
+  }
+  main #audio_ui .ui_child {
+    gap: 14px;
+  }
+  main #audio_ui .ui_child .backward,
+  main #audio_ui .ui_child .forward {
+    font-size: 1.7rem;
+    width: 19px;
+  }
+  main #audio_ui .ui_child .play {
+    font-size: 1.7rem;
+    width: 17px;
+  }
+  main #audio_ui .ui_child .vol {
+    font-size: 1.7rem;
+    width: 22px;
+  }
+  main #audio_ui .ui_child .vol_wrap {
+    margin-left: 0;
+  }
+  main #audio_ui .ui_child .vol_wrap.open .vol_slider {
+    width: 72px;
+    margin-right: 12px;
+  }
+  main #audio_ui .ui_child .v_bar,
+  main #audio_ui .ui_child .v_fill {
+    width: 72px;
+  }
+}
+

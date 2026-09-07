@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="description" content="jonathan.rs" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="jonathan.rs" />
+    <meta property="og:site_name" content="jonathan.rs" />
+    <meta property="og:url" content="https://jonathan.rs/" />
+    <meta property="og:description" content="jonathan.rs" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <title>&#65279;</title>
+    <link rel="icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+</head>
+
+<body>
+    <main>
+        <div id="canvasContainer">
+            <canvas id="canvas"></canvas>
+            <canvas id="canvas2"></canvas>
+            <canvas id="canvas3"></canvas>
+        </div>
+        <div id="audio_ui">
+            <div class="track_tit"></div>
+            <div class="ui_child">
+                <span class="bgm_setting"><span><i class="fas fa-toggle-on"></i></span></span>
+                <span class="backward"><i class="fas fa-step-backward"></i></span>
+                <span class="play">
+                    <i class="fas fa-play"></i>
+                    <i class="fas fa-pause"></i>
+                </span>
+                <span class="forward"><i class="fas fa-step-forward"></i></span>
+                <span class="vol_wrap">
+                    <span class="vol_slider" role="slider" aria-label="Volume" aria-valuemin="0" aria-valuemax="100"
+                        aria-valuenow="100" tabindex="0">
+                        <span class="v_bar"></span>
+                        <span class="v_fill"></span>
+                    </span>
+                    <span class="vol">
+                        <i class="fas fa-volume-up"></i>
+                        <i class="fas fa-volume-mute"></i>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div id="progress_bar">
+            <div class="b_bar"></div>
+            <div class="p_bar"></div>
+        </div>
+        <div id="sound_message">Turn off the silent mode</div>
+        <div id="start_play_btn"><i class="fas fa-play fa-4x"></i></div>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
